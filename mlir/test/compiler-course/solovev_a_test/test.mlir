@@ -103,4 +103,45 @@ module {
 
     return
   }
+
+  // Test 6. Descending loop (negative step)
+  // CHECK-LABEL: func.func @test_descending_loop
+  // CHECK-NEXT: %c10 = arith.constant 10 : index
+  // CHECK-NEXT: %c0 = arith.constant 0 : index
+  // CHECK-NEXT: %c_neg3 = arith.constant -3 : index
+  // CHECK-NEXT: scf.for %{{.*}} = %c10 to %c0 step %c_neg3 {
+  // CHECK-NEXT: } {trip_count = 4 : index}
+  // CHECK-NEXT: return
+  func.func @test_descending_loop() {
+    %c10 = arith.constant 10 : index
+    %c0 = arith.constant 0 : index
+    %c_neg3 = arith.constant -3 : index
+
+    scf.for %i = %c10 to %c0 step %c_neg3 {
+    }
+
+    return
+  }
+
+  // Test 7. Negative step but incorrect range (no iteration)
+  // CHECK-LABEL: func.func @test_negative_step_wrong_range
+  // CHECK-NEXT: %c0 = arith.constant 0 : index
+  // CHECK-NEXT: %c3 = arith.constant 3 : index
+  // CHECK-NEXT: %c_neg2 = arith.constant -2 : index
+  // CHECK-NEXT: scf.for %{{.*}} = %c0 to %c3 step %c_neg2 {
+  // CHECK-NEXT: }{{$}}
+  // CHECK-NEXT: return
+  func.func @test_negative_step_wrong_range() {
+    %c0 = arith.constant 0 : index
+    %c3 = arith.constant 3 : index
+    %c_neg2 = arith.constant -2 : index
+
+    scf.for %i = %c0 to %c3 step %c_neg2 {
+    }
+
+    return
+  }
+
 }
+
+  
